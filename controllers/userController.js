@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+// OPTIONAL: Token blacklist (send to auth.js)
+let tokenBlacklist = [];
+
 const getAllUsers = (req, res) => {
   User.getAll((err, results) => {
     if (err) return res.status(500).json({ message: err.message });
@@ -63,4 +66,20 @@ const login = (req, res) => {
   });
 };
 
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, login };
+// ======================
+// ✅ LOGOUT 
+// ======================
+const logout = (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(400).json({ message: "Token missing" });
+  }
+
+  // Save token in blacklist
+  tokenBlacklist.push(token);
+
+  res.json({ message: "Logout successful" });
+};
+
+module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, login, logout };
