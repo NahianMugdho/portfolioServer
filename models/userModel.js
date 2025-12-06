@@ -44,7 +44,20 @@ const User = {
       if (err) return cb(err);
       cb(null, result.affectedRows);
     });
-  }
+  },
+
+
+getByEmail: (email, cb) => {
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    db.query(sql, [email], (err, results) => {
+        if (err) return cb(err);
+        cb(null, results[0]);
+    });
+},
+
+
+
+
 };
 
 module.exports = User;
