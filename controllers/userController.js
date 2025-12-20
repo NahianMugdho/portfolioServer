@@ -23,9 +23,9 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { fullname, email, password, role } = req.body;
+  const { fullname, email, password, role, whatsapp, Phone, photo, github, expertise, CV } = req.body;
   const hashed = bcrypt.hashSync(password, 10);
-  User.create({ fullname, email, password: hashed, role }, (err, id) => {
+  User.create({ fullname, email, password: hashed, role, whatsapp, Phone, photo, github, expertise, CV }, (err, id) => {
     if (err) return res.status(500).json({ message: err.message });
     res.status(201).json({ message: 'User created', id });
   });
@@ -82,4 +82,4 @@ const logout = (req, res) => {
   res.json({ message: "Logout successful" });
 };
 
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, login, logout };
+module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, login, logout , tokenBlacklist };
