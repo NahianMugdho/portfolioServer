@@ -31,16 +31,60 @@ const createUser = (req, res) => {
   });
 };
 
+// const updateUser = (req, res) => {
+//   const id = req.params.id;
+//   const { fullname, email, password, role } = req.body;
+//   const hashed = password ? bcrypt.hashSync(password, 10) : undefined;
+//   User.update(id, { fullname, email, password: hashed, role }, (err, affectedRows) => {
+//     if (err) return res.status(500).json({ message: err.message });
+//     if (!affectedRows) return res.status(404).json({ message: 'User not found' });
+//     res.json({ message: 'User updated' });
+//   });
+// };
+
+
 const updateUser = (req, res) => {
   const id = req.params.id;
-  const { fullname, email, password, role } = req.body;
+  const {
+    fullname,
+    email,
+    password,
+    role,
+    whatsapp,
+    Phone,
+    photo,
+    github,
+    expertise,
+    CV
+  } = req.body;
+
+  // Only hash if password is provided
   const hashed = password ? bcrypt.hashSync(password, 10) : undefined;
-  User.update(id, { fullname, email, password: hashed, role }, (err, affectedRows) => {
-    if (err) return res.status(500).json({ message: err.message });
-    if (!affectedRows) return res.status(404).json({ message: 'User not found' });
-    res.json({ message: 'User updated' });
+
+  User.update(id, {
+    fullname,
+    email,
+    password: hashed,  // undefined = no change to password
+    role,
+    whatsapp,
+    Phone,
+    photo,
+    github,
+    expertise,
+    CV
+  }, (err, affectedRows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+    if (affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found or no changes made' });
+    }
+    res.json({ message: 'User updated successfully' });
   });
 };
+
+//=========================================================================================================================//
 
 const deleteUser = (req, res) => {
   const id = req.params.id;
