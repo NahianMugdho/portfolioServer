@@ -9,5 +9,6 @@ router.post('/', userController.createUser);        // রেজিস্টা�
 router.put('/:id', auth, userController.updateUser);// আপডেট
 router.delete('/:id', auth, userController.deleteUser);// ডিলিট
 router.post('/login', userController.login);        // লগইন
+router.post('/logout', userController.logout);
 
 module.exports = router;

@@ -18,4 +18,4 @@ db.connect(err=>
     console.log("DB Connected"); 
 }
 )
-module.experts = db ;
+module.exports = db ;

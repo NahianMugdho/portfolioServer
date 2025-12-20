@@ -20,18 +20,18 @@ const User = {
   },
 
   // নতুন ইউজার তৈরি
-  create: ({ fullname, email, password, role }, cb) => {
-    const sql = 'INSERT INTO users (fullname, email, password, role) VALUES (?, ?, ?, ?)';
-    db.query(sql, [fullname, email, password, role], (err, result) => {
+  create: ({ fullname, email, password, role ,whatsapp,Phone,photo,github,expertise,CV }, cb) => {
+    const sql = 'INSERT INTO users (fullname, email, password, role,whatsapp,Phone,photo,github,expertise,CV ) VALUES (?, ?, ?, ?,?,?,?,?,?,?)';
+    db.query(sql, [fullname, email, password, role,whatsapp,Phone,photo,github,expertise,CV], (err, result) => {
       if (err) return cb(err);
       cb(null, result.insertId);
     });
   },
 
   // ইউজার আপডেট
-  update: (id, { fullname, email, password, role }, cb) => {
-    const sql = 'UPDATE users SET fullname=?, email=?, password=?, role=? WHERE id=?';
-    db.query(sql, [fullname, email, password, role, id], (err, result) => {
+  update: (id, { fullname, email, password, role ,whatsapp,Phone,photo,github,expertise,CV}, cb) => {
+    const sql = 'UPDATE users SET fullname=?, email=?, password=?, role=?, whatsapp=?, Phone=?, photo=?, github=?, expertise=?, CV=? WHERE id=?';
+    db.query(sql, [fullname, email, password, role, id,whatsapp,Phone,photo,github,expertise,CV], (err, result) => {
       if (err) return cb(err);
       cb(null, result.affectedRows);
     });
@@ -44,7 +44,20 @@ const User = {
       if (err) return cb(err);
       cb(null, result.affectedRows);
     });
-  }
+  },
+
+
+getByEmail: (email, cb) => {
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    db.query(sql, [email], (err, results) => {
+        if (err) return cb(err);
+        cb(null, results[0]);
+    });
+},
+
+
+
+
 };
 
 module.exports = User;
