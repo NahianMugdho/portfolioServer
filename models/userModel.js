@@ -29,13 +29,37 @@ const User = {
   },
 
   // ইউজার আপডেট
-  update: (id, { fullname, email, password, role ,whatsapp,Phone,photo,github,expertise,CV}, cb) => {
-    const sql = 'UPDATE users SET fullname=?, email=?, password=?, role=?, whatsapp=?, Phone=?, photo=?, github=?, expertise=?, CV=? WHERE id=?';
-    db.query(sql, [fullname, email, password, role, id,whatsapp,Phone,photo,github,expertise,CV], (err, result) => {
-      if (err) return cb(err);
-      cb(null, result.affectedRows);
-    });
-  },
+  // update: (id, { fullname, email, password, role ,whatsapp,Phone,photo,github,expertise,CV}, cb) => {
+  //   const sql = 'UPDATE users SET fullname=?, email=?, password=?, role=?, whatsapp=?, Phone=?, photo=?, github=?, expertise=?, CV=? WHERE id=?';
+  //   db.query(sql, [fullname, email, password, role, id,whatsapp,Phone,photo,github,expertise,CV], (err, result) => {
+  //     if (err) return cb(err);
+  //     cb(null, result.affectedRows);
+  //   });
+  // },
+  update: (id, data, cb) => {
+  const fields = [];
+  const values = [];
+
+  Object.keys(data).forEach(key => {
+    if (data[key] !== undefined) {
+      fields.push(`${key} = ?`);
+      values.push(data[key]);
+    }
+  });
+
+  if (fields.length === 0) {
+    return cb(null, 0); // কিছুই আপডেট হয়নি
+  }
+
+  const sql = `UPDATE users SET ${fields.join(", ")} WHERE id = ?`;
+  values.push(id);
+
+  db.query(sql, values, (err, result) => {
+    if (err) return cb(err);
+    cb(null, result.affectedRows);
+  });
+},
+
 
   // ইউজার ডিলিট
   delete: (id, cb) => {
