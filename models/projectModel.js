@@ -25,13 +25,38 @@ const Project = {
     });
   },
 
-  update: (id, { users_id, title, description, status, start_date, end_date, image }, cb) => {
-    const sql = 'UPDATE projects SET users_id=?, title=?, description=?, status=?, start_date=?, end_date=?, image=? WHERE id=?';
-    db.query(sql, [users_id, title, description, status, start_date, end_date, image, id], (err, result) => {
-      if (err) return cb(err);
-      cb(null, result.affectedRows);
-    });
-  },
+  // update: (id, { users_id, title, description, status, start_date, end_date, image }, cb) => {
+  //   const sql = 'UPDATE projects SET users_id=?, title=?, description=?, status=?, start_date=?, end_date=?, image=? WHERE id=?';
+  //   db.query(sql, [users_id, title, description, status, start_date, end_date, image, id], (err, result) => {
+  //     if (err) return cb(err);
+  //     cb(null, result.affectedRows);
+  //   });
+  // },
+
+  update: (id, data, cb) => {
+  const fields = [];
+  const values = [];
+
+  Object.keys(data).forEach(key => {
+    if (data[key] !== undefined) {
+      fields.push(`${key} = ?`);
+      values.push(data[key]);
+    }
+  });
+
+  if (fields.length === 0) {
+    return cb(null, 0); // কোনো ফিল্ড পাঠানো হয়নি
+  }
+
+  const sql = `UPDATE projects SET ${fields.join(", ")} WHERE id = ?`;
+  values.push(id);
+
+  db.query(sql, values, (err, result) => {
+    if (err) return cb(err);
+    cb(null, result.affectedRows);
+  });
+},
+
 
   delete: (id, cb) => {
     const sql = 'DELETE FROM projects WHERE id=?';
