@@ -17,9 +17,9 @@ const Project = {
     });
   },
 
-  create: ({ users_id, title, description, status, start_date, end_date, image }, cb) => {
-    const sql = 'INSERT INTO projects (users_id, title, description, status, start_date, end_date, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [users_id, title, description, status, start_date, end_date, image], (err, result) => {
+  create: ({ users_id, title, description, status, start_date, end_date, image, type, topics }, cb) => {
+    const sql = 'INSERT INTO projects (users_id, title, description, status, start_date, end_date, image,type,topics) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)';
+    db.query(sql, [users_id, title, description, status, start_date, end_date, image,type,topics], (err, result) => {
       if (err) return cb(err);
       cb(null, result.insertId);
     });
